@@ -7,6 +7,7 @@ import br.com.flexpag.reports.factory.dto.ParamRequest;
 import br.com.flexpag.reports.factory.enums.PaymentType;
 import br.com.flexpag.reports.factory.enums.ReportType;
 import br.com.flexpag.reports.factory.enums.Status;
+import br.com.flexpag.reports.service.ReportGenerateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,16 +21,19 @@ import java.time.LocalDate;
 public class ReportGenerateController {
 
     @Autowired
-    ClientReport clientReport;
+    ReportGenerateService reportGenerateService;
 
     @PostMapping
-    public void generateReport(@RequestParam Status status, LocalDate date, PaymentType paymentType, Long clientId, ReportType reportType){
+    public void generateReport(
+            @RequestParam(required = false) Status status,
+            @RequestParam(required = false) LocalDate date,
+            @RequestParam(required = false) PaymentType paymentType,
+            @RequestParam(required = false) Long clientId,
+            @RequestParam(required = true) ReportType reportType){
 
         ParamRequest paramRequest = new ParamRequest(status, date, paymentType, clientId, reportType);
 
-        Report report = ReportFactory.createReport(paramRequest);
-
-        report.getReport(paramRequest);
+        reportGenerateService.generateReport(paramRequest);
 
     }
 
