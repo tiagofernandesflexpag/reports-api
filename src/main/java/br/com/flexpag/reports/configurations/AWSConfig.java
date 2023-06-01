@@ -14,8 +14,8 @@ public class AWSConfig {
 
     public AWSCredentials credentials() {
         AWSCredentials credentials = new BasicAWSCredentials(
-                "AKIAVAO7KMNCGNVO6VES",
-                "ZDVsYBhrKyPCToLLnzNOUJ0A03vjIPSkBoxOBS0I"
+                "AKIAVAO7KMNCNNL2MXX7",
+                "9IU+jZEdtaIX8+qIr4stBP1SrkDQ1W1KssvGrdNA"
         );
         return credentials;
     }

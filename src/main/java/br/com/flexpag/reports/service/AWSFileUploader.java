@@ -24,6 +24,7 @@ public class AWSFileUploader {
         metadata.setContentLength(file.length());
 
         PutObjectRequest request = new PutObjectRequest(bucketName, fileName, fis, metadata);
+
         amazonS3.putObject(request);
 
         fis.close();

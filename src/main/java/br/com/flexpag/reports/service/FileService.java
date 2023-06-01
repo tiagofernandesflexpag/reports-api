@@ -54,7 +54,7 @@ public class FileService {
         fw.close();
 
         File file = new File("relatorio.xls");
-        String bucketName = "reports-api-bucket-flexpag";
+        String bucketName = "payments-reports-bucket";
         String fileName = "relatorio" + "_" + reportType + "_" + UUID.randomUUID() + ".xls";
 
         try {
