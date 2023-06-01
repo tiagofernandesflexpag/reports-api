@@ -2,52 +2,44 @@ package br.com.flexpag.reports.factory;
 
 import br.com.flexpag.reports.configurations.JdbcUtils;
 import br.com.flexpag.reports.factory.dto.ParamRequest;
+import br.com.flexpag.reports.service.FileService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 @Service
+@RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class ClientReport implements Report {
 
+    private final FileService fileService;
+
     @Override
-    public void getReport(ParamRequest paramRequest) {
+    public ByteArrayOutputStream getReport(ParamRequest paramRequest) {
 
         try (Connection connection = JdbcUtils.getConnection()) {
 
-            StringBuilder queryBuilder = new StringBuilder("SELECT * FROM client");
-
-            if (paramRequest.status() != null) {
-                queryBuilder.append(" AND status = ?");
-            }
+            StringBuilder queryBuilder = new StringBuilder("SELECT id FROM client WHERE 1 = 1");
 
             if (paramRequest.date() != null) {
                 queryBuilder.append(" AND created_at <= ?");
             }
 
-            if (paramRequest.paymentType() != null) {
-                queryBuilder.append(" AND payment_type = ?");
-            }
-
             if (paramRequest.clientId() != null) {
-                queryBuilder.append(" AND p.client_id = ?");
+                queryBuilder.append(" AND id = ?");
             }
 
             PreparedStatement statement = connection.prepareStatement(queryBuilder.toString());
             int parameterIndex = 1;
 
-            if (paramRequest.status() != null) {
-                statement.setString(parameterIndex++, paramRequest.status().name());
-            }
-
             if (paramRequest.date() != null) {
                 statement.setDate(parameterIndex++, java.sql.Date.valueOf(paramRequest.date()));
-            }
-
-            if (paramRequest.paymentType() != null) {
-                statement.setString(parameterIndex++, paramRequest.paymentType().name());
             }
 
             if (paramRequest.clientId() != null) {
@@ -55,21 +47,21 @@ public class ClientReport implements Report {
             }
 
             ResultSet resultSet = statement.executeQuery();
-
-            while (resultSet.next()) {
-                System.out.println("Client ID: " + resultSet.getLong("id"));
-                System.out.println("Contract Type: " + resultSet.getString("contract"));
-                System.out.println("Contract Number: " + resultSet.getLong("contract_number"));
-                System.out.println("Name: " + resultSet.getString("name"));
-                System.out.println("User ID: " + resultSet.getLong("user_id"));
-                System.out.println("-----------------------------");
-            }
+            ByteArrayOutputStream outputStream = fileService.writeArchive(resultSet);
 
             resultSet.close();
             statement.close();
+
+            return outputStream;
+
         } catch (SQLException e) {
             e.printStackTrace();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
+
+        return null;
+
     }
 
 }

@@ -2,18 +2,26 @@ package br.com.flexpag.reports.factory;
 
 import br.com.flexpag.reports.configurations.JdbcUtils;
 import br.com.flexpag.reports.factory.dto.ParamRequest;
+import br.com.flexpag.reports.service.FileService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 @Service
+@RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class TransactionReport implements Report{
 
+    private final FileService fileService;
+
     @Override
-    public void getReport(ParamRequest paramRequest) {
+    public ByteArrayOutputStream getReport(ParamRequest paramRequest) {
 
         try (Connection connection = JdbcUtils.getConnection()) {
 
@@ -57,22 +65,20 @@ public class TransactionReport implements Report{
 
             ResultSet resultSet = statement.executeQuery();
 
-            System.out.println(resultSet.getArray(2));
-
-            while (resultSet.next()) {
-                System.out.println("Transaction ID: " + resultSet.getInt("id"));
-                System.out.println("Status: " + resultSet.getString("status"));
-                System.out.println("Date: " + resultSet.getDate("created_at"));
-                System.out.println("Payment Type: " + resultSet.getString("payment_type"));
-                System.out.println("Purchase ID: " + resultSet.getLong("purchase_id"));
-                System.out.println("Client ID: " + resultSet.getLong("client_id"));
-                System.out.println("-----------------------------");
-            }
+            ByteArrayOutputStream outputStream = fileService.writeArchive(resultSet);
 
             resultSet.close();
             statement.close();
+
+            return outputStream;
+
         } catch (SQLException e) {
             e.printStackTrace();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
+
+        return null;
+
     }
 }
