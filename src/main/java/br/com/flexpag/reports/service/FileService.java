@@ -49,9 +49,9 @@ public class FileService {
         writer.flush();
         writer.close();
 
-        FileWriter fw = new FileWriter("relatorio.xls");
-        fw.write(outputStream.toString());
-        fw.close();
+        FileWriter tempFw = new FileWriter("relatorio.xls");
+        tempFw.write(outputStream.toString());
+        tempFw.close();
 
         File file = new File("relatorio.xls");
         String bucketName = "payments-reports-bucket";
