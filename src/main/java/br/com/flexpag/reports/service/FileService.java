@@ -1,19 +1,24 @@
 package br.com.flexpag.reports.service;
 
+import br.com.flexpag.reports.configurations.AWSConfig;
+import br.com.flexpag.reports.factory.enums.ReportType;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.ByteArrayOutputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class FileService {
 
-    public ByteArrayOutputStream writeArchive(ResultSet resultSet) throws SQLException, IOException {
+    private final AWSFileUploader awsFileUploader;
+
+    public ByteArrayOutputStream writeArchive(ResultSet resultSet, ReportType reportType) throws SQLException, IOException {
 
         ResultSetMetaData metaData = resultSet.getMetaData();
         Integer columnCount = metaData.getColumnCount();
@@ -44,9 +49,20 @@ public class FileService {
         writer.flush();
         writer.close();
 
-        FileWriter fw = new FileWriter("relatorio.txt");
+        FileWriter fw = new FileWriter("relatorio.xls");
         fw.write(outputStream.toString());
         fw.close();
+
+        File file = new File("relatorio.xls");
+        String bucketName = "reports-api-bucket-flexpag";
+        String fileName = "relatorio" + "_" + reportType + "_" + UUID.randomUUID() + ".xls";
+
+        try {
+            awsFileUploader.uploadFileToBucket(file, bucketName, fileName);
+            file.delete();
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
 
         return outputStream;
     }

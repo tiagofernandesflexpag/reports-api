@@ -47,8 +47,9 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>software.amazon.awssdk</groupId>
-			<artifactId>s3</artifactId>
+			<groupId>com.amazonaws</groupId>
+			<artifactId>aws-java-sdk-s3</artifactId>
+			<version>1.11.1033</version>
 		</dependency>
 	</dependencies>
 	<build>

@@ -47,7 +47,7 @@ public class ClientReport implements Report {
             }
 
             ResultSet resultSet = statement.executeQuery();
-            ByteArrayOutputStream outputStream = fileService.writeArchive(resultSet);
+            ByteArrayOutputStream outputStream = fileService.writeArchive(resultSet, paramRequest.reportType());
 
             resultSet.close();
             statement.close();
