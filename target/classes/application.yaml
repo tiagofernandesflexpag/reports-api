@@ -1,3 +1,5 @@
+server:
+  port: 8090
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/postgres
@@ -13,4 +15,5 @@ spring:
     bucketName: reports-api-bucket-flexpag
     key: AKIAVAO7KMNCGNVO6VES
     secret: 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
+
 
