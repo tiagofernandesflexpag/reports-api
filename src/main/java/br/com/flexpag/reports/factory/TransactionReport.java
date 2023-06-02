@@ -1,6 +1,6 @@
 package br.com.flexpag.reports.factory;
 
-import br.com.flexpag.reports.configurations.JdbcUtils;
+import br.com.flexpag.reports.configurations.JdbcConfig;
 import br.com.flexpag.reports.factory.dto.ParamRequest;
 import br.com.flexpag.reports.service.FileService;
 import lombok.RequiredArgsConstructor;
@@ -23,9 +23,10 @@ public class TransactionReport implements Report{
     @Override
     public ByteArrayOutputStream getReport(ParamRequest paramRequest) {
 
-        try (Connection connection = JdbcUtils.getConnection()) {
+        try (Connection connection = JdbcConfig.getConnection()) {
 
-            StringBuilder queryBuilder = new StringBuilder("SELECT t.*, p.client_id FROM transaction t");
+            StringBuilder queryBuilder = new StringBuilder("SELECT t.id, t.authorization_code, t.instalments," +
+                    " t.payment_type, t.status, t.uuid, p.client_id FROM transaction t");
             queryBuilder.append(" JOIN purchase p ON t.purchase_id = p.id WHERE 1 = 1");
 
             if (paramRequest.status() != null) {
@@ -45,6 +46,7 @@ public class TransactionReport implements Report{
             }
 
             PreparedStatement statement = connection.prepareStatement(queryBuilder.toString());
+
             int parameterIndex = 1;
 
             if (paramRequest.status() != null) {
@@ -65,7 +67,7 @@ public class TransactionReport implements Report{
 
             ResultSet resultSet = statement.executeQuery();
 
-            ByteArrayOutputStream outputStream = fileService.writeArchive(resultSet);
+            ByteArrayOutputStream outputStream = fileService.writeArchive(resultSet, paramRequest.reportType());
 
             resultSet.close();
             statement.close();
@@ -73,9 +75,13 @@ public class TransactionReport implements Report{
             return outputStream;
 
         } catch (SQLException e) {
+
             e.printStackTrace();
+
         } catch (IOException e) {
+
             throw new RuntimeException(e);
+
         }
 
         return null;

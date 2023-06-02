@@ -1,6 +1,6 @@
 package br.com.flexpag.reports.factory;
 
-import br.com.flexpag.reports.configurations.JdbcUtils;
+import br.com.flexpag.reports.configurations.JdbcConfig;
 import br.com.flexpag.reports.factory.dto.ParamRequest;
 import br.com.flexpag.reports.service.FileService;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +23,7 @@ public class ClientReport implements Report {
     @Override
     public ByteArrayOutputStream getReport(ParamRequest paramRequest) {
 
-        try (Connection connection = JdbcUtils.getConnection()) {
+        try (Connection connection = JdbcConfig.getConnection()) {
 
             StringBuilder queryBuilder = new StringBuilder("SELECT id FROM client WHERE 1 = 1");
 
@@ -47,7 +47,7 @@ public class ClientReport implements Report {
             }
 
             ResultSet resultSet = statement.executeQuery();
-            ByteArrayOutputStream outputStream = fileService.writeArchive(resultSet);
+            ByteArrayOutputStream outputStream = fileService.writeArchive(resultSet, paramRequest.reportType());
 
             resultSet.close();
             statement.close();
@@ -55,9 +55,13 @@ public class ClientReport implements Report {
             return outputStream;
 
         } catch (SQLException e) {
+
             e.printStackTrace();
+
         } catch (IOException e) {
+
             throw new RuntimeException(e);
+
         }
 
         return null;
