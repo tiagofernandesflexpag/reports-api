@@ -1,5 +1,5 @@
 # Documentação da API de Relatórios
-Este repositório contém a API de Relatórios Flexpag. A coleção oferece um conjunto de endpoints para gerar relatórios diversos.
+Este repositório contém a API de Relatórios Flexpag. A coleção oferece um conjunto de endpoints para gerar relatórios de transações e clientes.
 
 ## Uso
 Para utilizar a API de Relatórios, siga as instruções abaixo:
