@@ -1,24 +1,51 @@
 package br.com.flexpag.reports.service;
 
-import br.com.flexpag.reports.configurations.AWSConfig;
-import com.amazonaws.HttpMethod;
-import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
-import lombok.RequiredArgsConstructor;
-import org.joda.time.LocalDate;
-import org.springframework.beans.factory.annotation.Autowired;
+import br.com.flexpag.reports.configurations.JdbcUtils;
+import br.com.flexpag.reports.factory.dto.ReportResponseDTO;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 @Service
-@RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class ReportDownloadService {
 
-    private final AWSConfig awsConfig;
+    public ReportResponseDTO getDownloadLink(String fileName) throws SQLException {
 
-    public String getDownloadLink(String filename) {
+        try(Connection connection = JdbcUtils.getConnection()){
 
-        String downloadLink = "https://payments-reports-bucket.s3.amazonaws.com/" + filename;
+            String query = "SELECT name, link from report where name = ?";
 
-        return downloadLink;
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, fileName);
+
+            ResultSet file = statement.executeQuery();
+
+            if (file.next()) {
+
+                String name = file.getString("name");
+                String link = file.getString("link");
+                var report = new ReportResponseDTO(name, link);
+
+                statement.close();
+                file.close();
+
+                return report;
+
+            }else{
+
+                throw new EntityNotFoundException("O arquivo com o nome enviado não foi encontrado!");
+
+            }
+
+        }catch (SQLException e){
+
+            throw new SQLException(e);
+
+        }
 
     }
 

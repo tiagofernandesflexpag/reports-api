@@ -18,6 +18,7 @@ import java.util.UUID;
 public class FileService {
 
     private final AWSFileUploader awsFileUploader;
+    private final GenerateDownloadLinkService generateDownloadLinkService;
 
     public ByteArrayOutputStream writeArchive(ResultSet resultSet, ReportType reportType) throws SQLException, IOException {
 
@@ -59,13 +60,21 @@ public class FileService {
         String fileName = "relatorio" + "_" + reportType + "_" + UUID.randomUUID() + ".xls";
 
         try {
+
             awsFileUploader.uploadFileToBucket(file, bucketName, fileName);
+
             file.delete();
+
+            generateDownloadLinkService.generateDownloadLinkService(fileName);
+
         }catch (Exception e){
+
             throw new RuntimeException(e);
+
         }
 
         return outputStream;
+
     }
 }
 
