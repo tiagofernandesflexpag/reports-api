@@ -14,11 +14,15 @@ public class JdbcUtils {
 
     public static Connection getConnection() throws SQLException {
         try {
+
             Class.forName("org.postgresql.Driver");
             return DriverManager.getConnection(URL, USERNAME, PASSWORD);
+
         } catch (ClassNotFoundException e) {
+
             e.printStackTrace();
             throw new SQLException("Falha ao se conectar com o Driver da DB!");
+
         }
     }
 }

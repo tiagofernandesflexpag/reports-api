@@ -25,7 +25,8 @@ public class TransactionReport implements Report{
 
         try (Connection connection = JdbcUtils.getConnection()) {
 
-            StringBuilder queryBuilder = new StringBuilder("SELECT t.*, p.client_id FROM transaction t");
+            StringBuilder queryBuilder = new StringBuilder("SELECT t.id, t.authorization_code, t.instalments," +
+                    " t.payment_type, t.status, t.uuid, p.client_id FROM transaction t");
             queryBuilder.append(" JOIN purchase p ON t.purchase_id = p.id WHERE 1 = 1");
 
             if (paramRequest.status() != null) {
@@ -45,6 +46,7 @@ public class TransactionReport implements Report{
             }
 
             PreparedStatement statement = connection.prepareStatement(queryBuilder.toString());
+
             int parameterIndex = 1;
 
             if (paramRequest.status() != null) {
@@ -73,9 +75,13 @@ public class TransactionReport implements Report{
             return outputStream;
 
         } catch (SQLException e) {
+
             e.printStackTrace();
+
         } catch (IOException e) {
+
             throw new RuntimeException(e);
+
         }
 
         return null;

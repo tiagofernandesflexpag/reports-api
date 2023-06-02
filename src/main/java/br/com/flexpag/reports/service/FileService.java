@@ -4,6 +4,7 @@ import br.com.flexpag.reports.configurations.AWSConfig;
 import br.com.flexpag.reports.factory.enums.ReportType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.*;

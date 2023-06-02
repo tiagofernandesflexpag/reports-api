@@ -8,5 +8,4 @@ public interface Report {
 
     ByteArrayOutputStream getReport(ParamRequest paramRequest);
 
-
 }

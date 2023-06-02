@@ -55,9 +55,13 @@ public class ClientReport implements Report {
             return outputStream;
 
         } catch (SQLException e) {
+
             e.printStackTrace();
+
         } catch (IOException e) {
+
             throw new RuntimeException(e);
+
         }
 
         return null;
