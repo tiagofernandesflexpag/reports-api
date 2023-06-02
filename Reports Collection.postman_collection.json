@@ -1,0 +1,94 @@
+{
+	"info": {
+		"_postman_id": "51e52781-2ce2-4744-8b37-2ddce415e8e2",
+		"name": "Reports Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27776452"
+	},
+	"item": [
+		{
+			"name": "Get Download Link",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8090/report/download?fileName=relatorio_TRANSACTION_fab6909b-8726-4484-ba04-0d1b74588fe0.xls",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"report",
+						"download"
+					],
+					"query": [
+						{
+							"key": "fileName",
+							"value": "relatorio_TRANSACTION_fab6909b-8726-4484-ba04-0d1b74588fe0.xls"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Generate Client Report",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8090/report?reportType=&createdAt=",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"report"
+					],
+					"query": [
+						{
+							"key": "reportType",
+							"value": ""
+						},
+						{
+							"key": "createdAt",
+							"value": ""
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Generate Transaction Report",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8090/report?reportType=&createdAt=",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"report"
+					],
+					"query": [
+						{
+							"key": "reportType",
+							"value": ""
+						},
+						{
+							"key": "createdAt",
+							"value": ""
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

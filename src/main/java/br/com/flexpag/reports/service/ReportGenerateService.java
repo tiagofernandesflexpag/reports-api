@@ -1,6 +1,5 @@
 package br.com.flexpag.reports.service;
 
-import br.com.flexpag.reports.factory.Report;
 import br.com.flexpag.reports.factory.ReportFactory;
 import br.com.flexpag.reports.factory.dto.ParamRequest;
 import lombok.RequiredArgsConstructor;
@@ -17,9 +16,7 @@ public class ReportGenerateService {
 
     public ByteArrayOutputStream generateReport(ParamRequest paramRequest){
 
-        Report report = reportFactory.createReport(paramRequest);
-
-        return report.getReport(paramRequest);
+        return reportFactory.getService(paramRequest.reportType().toString()).getReport(paramRequest);
 
     }
 
