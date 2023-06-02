@@ -12,7 +12,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8090/report/download?fileName=relatorio_TRANSACTION_fab6909b-8726-4484-ba04-0d1b74588fe0.xls",
+					"raw": "http://localhost:8090/report/download?fileName=",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -25,7 +25,7 @@
 					"query": [
 						{
 							"key": "fileName",
-							"value": "relatorio_TRANSACTION_fab6909b-8726-4484-ba04-0d1b74588fe0.xls"
+							"value": ""
 						}
 					]
 				}
@@ -38,7 +38,7 @@
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8090/report?reportType=&createdAt=",
+					"raw": "http://localhost:8090/report?reportType=CLIENT&createdAt=",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -50,7 +50,7 @@
 					"query": [
 						{
 							"key": "reportType",
-							"value": ""
+							"value": "CLIENT"
 						},
 						{
 							"key": "createdAt",
@@ -67,7 +67,7 @@
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8090/report?reportType=&createdAt=",
+					"raw": "http://localhost:8090/report?reportType=TRANSACTION&createdAt=&paymentType&clientId&status",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -79,11 +79,23 @@
 					"query": [
 						{
 							"key": "reportType",
-							"value": ""
+							"value": "TRANSACTION"
 						},
 						{
 							"key": "createdAt",
 							"value": ""
+						},
+						{
+							"key": "paymentType",
+							"value": null
+						},
+						{
+							"key": "clientId",
+							"value": null
+						},
+						{
+							"key": "status",
+							"value": null
 						}
 					]
 				}
