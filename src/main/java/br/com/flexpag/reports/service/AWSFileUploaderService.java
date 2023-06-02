@@ -13,7 +13,7 @@ import java.io.IOException;
 
 @Service
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
-public class AWSFileUploader {
+public class AWSFileUploaderService {
 
     private final AmazonS3 amazonS3;
 

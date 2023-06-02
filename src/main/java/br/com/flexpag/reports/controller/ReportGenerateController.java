@@ -1,8 +1,5 @@
 package br.com.flexpag.reports.controller;
 
-import br.com.flexpag.reports.factory.ClientReport;
-import br.com.flexpag.reports.factory.Report;
-import br.com.flexpag.reports.factory.ReportFactory;
 import br.com.flexpag.reports.factory.dto.ParamRequest;
 import br.com.flexpag.reports.factory.enums.PaymentType;
 import br.com.flexpag.reports.factory.enums.ReportType;
@@ -17,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.ByteArrayOutputStream;
 import java.time.LocalDate;
 
 @RestController
@@ -40,6 +36,7 @@ public class ReportGenerateController {
         byte[] reportBytes = reportGenerateService.generateReport(paramRequest).toByteArray();
 
         return ResponseEntity.ok(reportBytes);
+
     }
 
 }

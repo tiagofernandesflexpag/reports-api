@@ -1,6 +1,6 @@
 package br.com.flexpag.reports.service;
 
-import br.com.flexpag.reports.configurations.JdbcUtils;
+import br.com.flexpag.reports.configurations.JdbcConfig;
 import br.com.flexpag.reports.factory.dto.ReportResponseDTO;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
@@ -15,7 +15,7 @@ public class ReportDownloadService {
 
     public ReportResponseDTO getDownloadLink(String fileName) throws SQLException {
 
-        try(Connection connection = JdbcUtils.getConnection()){
+        try(Connection connection = JdbcConfig.getConnection()){
 
             String query = "SELECT name, link from report where name = ?";
 

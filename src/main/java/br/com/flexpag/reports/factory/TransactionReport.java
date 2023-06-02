@@ -1,6 +1,6 @@
 package br.com.flexpag.reports.factory;
 
-import br.com.flexpag.reports.configurations.JdbcUtils;
+import br.com.flexpag.reports.configurations.JdbcConfig;
 import br.com.flexpag.reports.factory.dto.ParamRequest;
 import br.com.flexpag.reports.service.FileService;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +23,7 @@ public class TransactionReport implements Report{
     @Override
     public ByteArrayOutputStream getReport(ParamRequest paramRequest) {
 
-        try (Connection connection = JdbcUtils.getConnection()) {
+        try (Connection connection = JdbcConfig.getConnection()) {
 
             StringBuilder queryBuilder = new StringBuilder("SELECT t.id, t.authorization_code, t.instalments," +
                     " t.payment_type, t.status, t.uuid, p.client_id FROM transaction t");
